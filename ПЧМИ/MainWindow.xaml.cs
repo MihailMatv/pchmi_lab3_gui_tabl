@@ -92,13 +92,14 @@ namespace FileManagerWPF
 
         private void ApplyAttributesButton_Click(object sender, RoutedEventArgs e)
         {
-            if (FilesDataGrid.SelectedItems.Count == 0)
+
+            if (fileItems.Count == 0)
             {
-                System.Windows.MessageBox.Show("Пожалуйста, выберите хотя бы один файл.");
+                System.Windows.MessageBox.Show("В текущем каталоге нет файлов для изменения атрибутов.");
                 return;
             }
 
-            foreach (FileItem item in FilesDataGrid.SelectedItems)
+            foreach (FileItem item in fileItems)
             {
                 string fullPath = Path.Combine(currentDirectory, item.FileName);
                 if (!File.Exists(fullPath)) continue;
@@ -119,8 +120,9 @@ namespace FileManagerWPF
                     System.Windows.MessageBox.Show($"Ошибка применения атрибутов к файлу {item.FileName}: {ex.Message}");
                 }
             }
-            System.Windows.MessageBox.Show("Атрибуты успешно применены ко всем выбранным файлам.");
-            PopulateFilesList(currentDirectory); // Обновить статус файлов после применения
+
+            System.Windows.MessageBox.Show("Атрибуты успешно применены ко всем файлам в списке.");
+            PopulateFilesList(currentDirectory);
         }
 
         private FileAttributes UpdateAttribute(FileAttributes original, FileAttributes flag, bool isChecked)
