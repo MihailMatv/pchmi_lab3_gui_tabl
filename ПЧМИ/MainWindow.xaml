@@ -7,34 +7,69 @@
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
+        <!-- Ряды: Меню, строка текущего каталога, основное содержимое, статус -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Верхнее меню с выбором функций -->
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="Выбрать каталог..." 
+                          Click="SelectFolderButton_Click"
+                          InputGestureText="Ctrl+O" />
+            </MenuItem>
+            <MenuItem Header="_Операции">
+                <MenuItem Header="Применить атрибуты" 
+                          Click="ApplyAttributesButton_Click"
+                          InputGestureText="Enter" />
+            </MenuItem>
+        </Menu>
+
         <!-- Текущий каталог -->
-        <TextBlock Text="Текущий каталог:" FontWeight="Bold" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" />
-        <TextBox x:Name="CurrentDirectoryTextBox" Grid.Column="1" Grid.Row="0" Margin="5,0" IsReadOnly="True" />
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="2" LastChildFill="True" Margin="0,6,0,0">
+            <TextBlock Text="Текущий каталог:" FontWeight="Bold" 
+                       VerticalAlignment="Center" Margin="0,0,6,0" />
+            <TextBox x:Name="CurrentDirectoryTextBox" IsReadOnly="True" />
+        </DockPanel>
 
         <!-- Дерево каталогов -->
-        <TreeView x:Name="DirectoryTreeView" Grid.Column="0" Grid.Row="1" Margin="0,5,5,5" SelectedItemChanged="DirectoryTreeView_SelectedItemChanged" />
+        <TreeView x:Name="DirectoryTreeView"
+                  Grid.Row="2" Grid.Column="0"
+                  Margin="0,6,6,6"
+                  SelectedItemChanged="DirectoryTreeView_SelectedItemChanged" />
 
-        <!-- DataGrid файлов -->
-        <DataGrid x:Name="FilesDataGrid" Grid.Column="1" Grid.Row="1" Margin="5" AutoGenerateColumns="False" SelectionMode="Extended" CanUserAddRows="False">
+        <!-- Таблица файлов -->
+        <DataGrid x:Name="FilesDataGrid"
+                  Grid.Row="2" Grid.Column="1"
+                  Margin="6"
+                  AutoGenerateColumns="False"
+                  SelectionMode="Extended"
+                  CanUserAddRows="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Имя файла" Binding="{Binding FileName}" Width="*" IsReadOnly="True"/>
-                <DataGridCheckBoxColumn Header="Только для чтения" Binding="{Binding IsReadOnly, Mode=TwoWay}" Width="150"/>
-                <DataGridCheckBoxColumn Header="Скрытый" Binding="{Binding IsHidden, Mode=TwoWay}" Width="80"/>
-                <DataGridCheckBoxColumn Header="Архивный" Binding="{Binding IsArchive, Mode=TwoWay}" Width="80"/>
-                <DataGridCheckBoxColumn Header="Системный" Binding="{Binding IsSystem, Mode=TwoWay}" Width="80"/>
+                <DataGridCheckBoxColumn Header="Только для чтения"
+                                Binding="{Binding IsReadOnly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Width="150"/>
+                <DataGridCheckBoxColumn Header="Скрытый"
+                                Binding="{Binding IsHidden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Width="80"/>
+                <DataGridCheckBoxColumn Header="Архивный"
+                                Binding="{Binding IsArchive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Width="80"/>
+                <DataGridCheckBoxColumn Header="Системный"
+                                Binding="{Binding IsSystem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Width="80"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- Кнопка выбора каталога -->
-        <Button Content="Выбрать каталог" Grid.Column="0" Grid.Row="2" Height="30" Margin="0,0,5,0" Click="SelectFolderButton_Click" />
-
-        <!-- Кнопка применения атрибутов -->
-        <Button Content="Применить атрибуты" Grid.Column="1" Grid.Row="2" Height="30" Margin="5,0,0,0" Click="ApplyAttributesButton_Click" HorizontalAlignment="Left" Width="150" />
+        <!-- Статус-строка (необязательно, для аккуратного вида) -->
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
+            <StatusBarItem Content="Готово" />
+        </StatusBar>
     </Grid>
 </Window>
