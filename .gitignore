@@ -1,0 +1,12 @@
+bin/
+obj/
+.vs/
+*.exe
+*.pdb
+*.cache
+*.baml
+*.g.cs
+*.g.i.cs
+*.g.resources
+*.FileListAbsolute.txt
+*.config
